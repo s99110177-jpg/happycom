@@ -1,0 +1,4 @@
+Pillow>=10.0
+numpy>=1.24
+holidays>=0.60
+korean_lunar_calendar>=0.3.1

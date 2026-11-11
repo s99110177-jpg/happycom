@@ -1,0 +1,85 @@
+name: 매일 아침 영상 생성
+
+on:
+  schedule:
+    # 매일 06:17 (한국시간) = 21:17 UTC (GitHub 예약 실행은 몇 분 늦어질 수 있음)
+    - cron: "17 21 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "날짜 (YYYY-MM-DD, 비우면 오늘 한국시간)"
+        required: false
+        default: ""
+      brand:
+        description: "영상 하단 문구 (예: 해피컴, 비우면 없음)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: morning-video
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 폰트·ffmpeg 설치
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-nanum fonts-nanum-extra fonts-noto-color-emoji fonts-noto-cjk
+
+      - name: 파이썬 패키지 설치
+        run: pip install -r requirements.txt
+
+      - name: 영상 3개 생성
+        env:
+          INPUT_DATE: ${{ github.event.inputs.date }}
+          INPUT_BRAND: ${{ github.event.inputs.brand || vars.BRAND }}
+        run: |
+          ARGS=()
+          if [ -n "$INPUT_DATE" ]; then ARGS+=(--date "$INPUT_DATE"); fi
+          if [ -n "$INPUT_BRAND" ]; then ARGS+=(--brand "$INPUT_BRAND"); fi
+          python -m morning_video "${ARGS[@]}"
+          DAY=$(ls output | sort | tail -1)
+          echo "DAY=$DAY" >> "$GITHUB_ENV"
+
+      - name: 아티팩트로 업로드 (Actions 실행 화면에서 다운로드)
+        uses: actions/upload-artifact@v4
+        with:
+          name: morning-video-${{ env.DAY }}
+          path: output/${{ env.DAY }}/
+          retention-days: 30
+
+      - name: 릴리스로 게시 (휴대폰에서 바로 다운로드)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="morning-${DAY}"
+          NOTES=$(python - <<'PY'
+          import json, os
+          info = json.load(open(f"output/{os.environ['DAY']}/info.json", encoding="utf-8"))
+          v = info["videos"]
+          lines = [f"## {info['korean_date']} 아침 영상", ""]
+          if "busan" in v:
+              lines.append("1. 부산 배경 — " + v["busan"]["message"].replace("\n", " "))
+          if "anniversary" in v:
+              a = v["anniversary"]
+              extra = f" (D-{a['dday']})" if a.get("dday") else ""
+              lines.append(f"2. 기념일 — {a['main']}{extra}")
+          if "character" in v:
+              lines.append("3. 캐릭터 — " + v["character"]["message"].replace("\n", " "))
+          print("\n".join(lines))
+          PY
+          )
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" output/${DAY}/*.mp4 --title "${DAY} 아침 영상" --notes "$NOTES" --latest
