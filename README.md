@@ -15,7 +15,7 @@
 
 ## 매일 자동 생성 (GitHub Actions)
 
-`.github/workflows/daily-morning-video.yml`이 **매일 06:17(한국시간)** 실행됩니다.
+`.github/workflows/daily-morning-video.yml`이 **매일 07:00(한국시간)** 실행됩니다.
 GitHub 예약 실행은 몇 분 늦어질 수 있습니다.
 
 - 결과: 저장소의 **Releases** 탭에 `morning-YYYY-MM-DD`로 영상 3개가 올라옵니다. 휴대폰에서도 바로 받을 수 있습니다.
