@@ -13,6 +13,16 @@
 - 메시지와 장면은 날짜에 따라 매일 바뀝니다.
 - 추모일(현충일, 순국선열의 날, 유엔참전용사 국제추모의 날 등)은 축포 없이 차분한 분위기로 만듭니다.
 
+### 스타일 B (`--style b`)
+
+| # | 영상 | 내용 |
+|---|------|------|
+| 1 | `YYYYMMDD_1_busan_b.mp4` | 해운대 해변(파도·파라솔·엘시티) + 잡지풍 큰 날짜 타이포 |
+| 2 | `YYYYMMDD_2_anniversary_b.mp4` | 일력: 어제 장이 뜯겨 나가고 오늘 날짜·음력·기념일이 나타남 |
+| 3 | `YYYYMMDD_3_character_b.mp4` | 종이 공예(페이퍼컷) 부산 풍경 위로 해피 갈매기가 인사 현수막을 끌고 비행 |
+
+`--style auto`로 실행하면 날마다 A/B 스타일이 번갈아 나옵니다.
+
 ## 매일 자동 생성 (GitHub Actions)
 
 `.github/workflows/daily-morning-video.yml`이 **매일 07:00(한국시간)** 실행됩니다.
@@ -33,6 +43,7 @@ python -m morning_video --date 2026-12-25      # 특정 날짜
 python -m morning_video --brand "해피컴"        # 하단에 상호 넣기
 python -m morning_video --only busan --scene gamcheon
 python -m morning_video --no-audio             # 무음
+python -m morning_video --style b              # 스타일 B (해운대·일력·페이퍼컷)
 ```
 
 ## 내용 바꾸기
