@@ -24,6 +24,15 @@
 `--style auto`로 실행하면 날마다 A/B 스타일이 번갈아 나옵니다. 매일 자동 생성은 기본으로 `auto`를 씁니다.
 고정하려면 Settings → Secrets and variables → Actions → **Variables**에 `STYLE`을 `a` 또는 `b`로 추가하세요.
 
+### 추가 영상
+
+| 옵션 | 파일 | 내용 |
+|------|------|------|
+| `--only photo` | `YYYYMMDD_photo.mp4` | 실사풍: 새벽 광안대교를 사진처럼 계산해 그린 장면(구름, 윤슬, 빛 번짐, 렌즈 플레어, 필름 그레인) |
+| `--only anim` | `YYYYMMDD_anim.mp4` | 캐릭터 애니메이션: 해피 갈매기가 착지 → 주먹 3번 "화이팅!" → 큰 제목과 인사. 수능일엔 '합격' 머리띠 |
+
+실제 사진으로 만들고 싶다면 `assets/busan/`에 직접 찍은 사진을 넣고 기본 스타일(1번 영상)을 사용하세요.
+
 ## 매일 자동 생성 (GitHub Actions)
 
 `.github/workflows/daily-morning-video.yml`이 **매일 07:00(한국시간)** 실행됩니다.

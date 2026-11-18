@@ -13,7 +13,7 @@ from pathlib import Path
 
 from . import calendar_kr as cal
 from . import (scene_anniversary, scene_anniversary2, scene_busan, scene_busan2, scene_character,
-               scene_character2)
+               scene_character2, scene_character3, scene_photo)
 from .render_common import REPO
 
 
@@ -21,8 +21,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="매일 아침 9:16 영상 3종 생성")
     ap.add_argument("--date", help="YYYY-MM-DD (기본: 오늘, 한국시간)")
     ap.add_argument("--out", default=str(REPO / "output"), help="출력 폴더")
-    ap.add_argument("--only", choices=["busan", "anniversary", "character"], action="append",
-                    help="특정 영상만 생성 (여러 번 지정 가능)")
+    ap.add_argument("--only", choices=["busan", "anniversary", "character", "photo", "anim"], action="append",
+                    help="특정 영상만 생성 (여러 번 지정 가능). photo=실사풍 광안대교, anim=캐릭터 애니메이션")
     ap.add_argument("--scene", choices=["gwangan", "gamcheon", "photo"], help="부산 장면 강제 지정")
     ap.add_argument("--style", choices=["a", "b", "auto"], default="a",
                     help="a: 기본(광안대교·감천/카드/해변 캐릭터), b: 해운대·일력·페이퍼컷, auto: 날마다 번갈아")
@@ -52,6 +52,12 @@ def main(argv=None):
         elif job == "anniversary":
             path = out_dir / f"{stamp}_2_anniversary{'' if style == 'a' else '_b'}.mp4"
             meta = anni_mod.build(d, path, brand=args.brand, audio=audio)
+        elif job == "photo":
+            path = out_dir / f"{stamp}_photo.mp4"
+            meta = scene_photo.build(d, path, brand=args.brand, audio=audio)
+        elif job == "anim":
+            path = out_dir / f"{stamp}_anim.mp4"
+            meta = scene_character3.build(d, path, brand=args.brand, audio=audio)
         else:
             path = out_dir / f"{stamp}_3_character{'' if style == 'a' else '_b'}.mp4"
             meta = char_mod.build(d, path, brand=args.brand, audio=audio)
@@ -59,7 +65,8 @@ def main(argv=None):
         info["videos"][job] = meta
         print(f"  ✔ {path.name}  ({time.time() - t0:.1f}s)  {json.dumps(meta, ensure_ascii=False)}")
 
-    (out_dir / f"info{'' if style == 'a' else '_b'}.json").write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding="utf-8")
+    info_name = "info_extra.json" if set(jobs) <= {"photo", "anim"} else f"info{'' if style == 'a' else '_b'}.json"
+    (out_dir / info_name).write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding="utf-8")
     print("완료!")
 
 

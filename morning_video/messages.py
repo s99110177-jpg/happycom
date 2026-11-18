@@ -94,6 +94,7 @@ SUNEUNG = {
     "morning": "그동안의 노력이\n오늘 빛날 거예요\n수험생 여러분, 화이팅!",
     "character": "수능 대박!\n아는 문제만 나와라~",
     "tag": "수험생 화이팅!",
+    "headband": "합격",
 }
 SPECIAL_DAYS = {
     "2026-11-19": SUNEUNG,
