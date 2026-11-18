@@ -114,13 +114,13 @@ def build(d: dt.date, out: Path, brand: str = "", audio=True, **_):
     cx, top = W / 2, 330
 
     t_head = text_layer(head, font("semibold", 42), header_col)
-    emo = emoji_image(main.emoji, 190)
+    emo = emoji_image(main.emoji, 160)
     title = _wrap_title(main.name, 12)
     t_title = text_layer(title, fit_font(title, "bold", PW - 120, 92 if "\n" not in title else 70), INK, line_gap=0.15)
     t_desc = text_layer(main.desc.replace("\n", " ") if len(main.desc) < 24 else main.desc,
                         font("semibold", 42), (96, 92, 88), line_gap=0.35)
     t_dday = text_layer(f"D-{dday}", font("bold", 64), RED) if dday else None
-    t_others = text_layer("함께하는 날 · " + " · ".join(o.name for o in others[:3]), font("semibold", 32), header_col) if others else None
+    t_others = text_layer("함께하는 날 · " + " · ".join(o.name for o in others[:3]), font("semibold", 34), (60, 56, 60) if not solemn else (240, 240, 245)) if others else None
     t_top = text_layer("오늘의 기념일", font("bold", 56), (60, 56, 60) if not solemn else (240, 240, 245))
     t_brand = text_layer(brand, font("bold", 40), (60, 56, 60) if not solemn else (240, 240, 245)) if brand else None
 
@@ -139,9 +139,9 @@ def build(d: dt.date, out: Path, brand: str = "", audio=True, **_):
         if pe > 0:
             sc = clamp(ease_out_back(pe) if not solemn else ease_out_cubic(pe), 0.01, 2)
             e2 = emo.resize((max(1, int(emo.width * sc)), max(1, int(emo.height * sc))), Image.BICUBIC)
-            paste(img, e2, (cx, body_y + 175 + 5 * math.sin(t * 2.5)), clamp(pe * 2))
+            paste(img, e2, (cx, body_y + 150 + 5 * math.sin(t * 2.5)), clamp(pe * 2))
         a = ease_out_cubic(progress(t, 1.55, 0.5))
-        ty = body_y + 300 + t_title.height / 2
+        ty = body_y + 255 + t_title.height / 2
         paste(img, t_title, (cx, ty + 24 * (1 - a)), a)
         y2 = ty + t_title.height / 2 + 20
         if t_dday:
@@ -151,7 +151,7 @@ def build(d: dt.date, out: Path, brand: str = "", audio=True, **_):
         a = ease_out_cubic(progress(t, 1.8, 0.5))
         paste(img, t_desc, (cx, y2 + t_desc.height / 2 + 10), a)
         if t_others:
-            paste(img, t_others, (cx, top + PH - 40), ease_out_cubic(progress(t, 2.1, 0.5)))
+            paste(img, t_others, (cx, top + PH + 70), ease_out_cubic(progress(t, 2.1, 0.5)))
         # 어제 장 뜯겨 날아감
         pt = progress(t, 0.35, 0.9)
         if pt < 1:

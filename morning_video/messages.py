@@ -89,6 +89,22 @@ WEEKDAY_TAG = [
 ]
 
 
+# 특별한 날 전용 문구 (해마다 날짜가 바뀌는 행사는 날짜별로 추가)
+SUNEUNG = {
+    "morning": "그동안의 노력이\n오늘 빛날 거예요\n수험생 여러분, 화이팅!",
+    "character": "수능 대박!\n아는 문제만 나와라~",
+    "tag": "수험생 화이팅!",
+}
+SPECIAL_DAYS = {
+    "2026-11-19": SUNEUNG,
+    "2027-11-18": SUNEUNG,
+}
+
+
+def _special(d: dt.date, key: str) -> str | None:
+    return SPECIAL_DAYS.get(d.isoformat(), {}).get(key)
+
+
 def _pick(seq: list[str], d: dt.date, salt: str) -> str:
     h = int(hashlib.sha256(f"{d.isoformat()}:{salt}".encode()).hexdigest(), 16)
     return seq[h % len(seq)]
@@ -96,12 +112,12 @@ def _pick(seq: list[str], d: dt.date, salt: str) -> str:
 
 def morning_message(d: dt.date) -> str:
     # 연속된 날짜에 같은 문구가 겹치지 않도록 날짜 순번으로 순환
-    return MORNING[d.toordinal() % len(MORNING)]
+    return _special(d, "morning") or MORNING[d.toordinal() % len(MORNING)]
 
 
 def character_message(d: dt.date) -> str:
-    return _pick(CHARACTER, d, "char")
+    return _special(d, "character") or _pick(CHARACTER, d, "char")
 
 
 def weekday_tag(d: dt.date) -> str:
-    return WEEKDAY_TAG[d.weekday()]
+    return _special(d, "tag") or WEEKDAY_TAG[d.weekday()]
