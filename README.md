@@ -21,7 +21,8 @@
 | 2 | `YYYYMMDD_2_anniversary_b.mp4` | 일력: 어제 장이 뜯겨 나가고 오늘 날짜·음력·기념일이 나타남 |
 | 3 | `YYYYMMDD_3_character_b.mp4` | 종이 공예(페이퍼컷) 부산 풍경 위로 해피 갈매기가 인사 현수막을 끌고 비행 |
 
-`--style auto`로 실행하면 날마다 A/B 스타일이 번갈아 나옵니다.
+`--style auto`로 실행하면 날마다 A/B 스타일이 번갈아 나옵니다. 매일 자동 생성은 기본으로 `auto`를 씁니다.
+고정하려면 Settings → Secrets and variables → Actions → **Variables**에 `STYLE`을 `a` 또는 `b`로 추가하세요.
 
 ## 매일 자동 생성 (GitHub Actions)
 

@@ -14,6 +14,12 @@ on:
         description: "영상 하단 문구 (예: 해피컴, 비우면 없음)"
         required: false
         default: ""
+      style:
+        description: "스타일 (auto=날마다 A/B 번갈아, a, b)"
+        required: false
+        default: "auto"
+        type: choice
+        options: [auto, a, b]
 
 permissions:
   contents: write
@@ -45,8 +51,9 @@ jobs:
         env:
           INPUT_DATE: ${{ github.event.inputs.date }}
           INPUT_BRAND: ${{ github.event.inputs.brand || vars.BRAND }}
+          INPUT_STYLE: ${{ github.event.inputs.style || vars.STYLE || 'auto' }}
         run: |
-          ARGS=()
+          ARGS=(--style "$INPUT_STYLE")
           if [ -n "$INPUT_DATE" ]; then ARGS+=(--date "$INPUT_DATE"); fi
           if [ -n "$INPUT_BRAND" ]; then ARGS+=(--brand "$INPUT_BRAND"); fi
           python -m morning_video "${ARGS[@]}"
@@ -67,9 +74,11 @@ jobs:
           TAG="morning-${DAY}"
           NOTES=$(python - <<'PY'
           import json, os
-          info = json.load(open(f"output/{os.environ['DAY']}/info.json", encoding="utf-8"))
+          import glob
+          path = sorted(glob.glob(f"output/{os.environ['DAY']}/info*.json"))[-1]
+          info = json.load(open(path, encoding="utf-8"))
           v = info["videos"]
-          lines = [f"## {info['korean_date']} 아침 영상", ""]
+          lines = [f"## {info['korean_date']} 아침 영상 (스타일 {info.get('style', 'a').upper()})", ""]
           if "busan" in v:
               lines.append("1. 부산 배경 — " + v["busan"]["message"].replace("\n", " "))
           if "anniversary" in v:
