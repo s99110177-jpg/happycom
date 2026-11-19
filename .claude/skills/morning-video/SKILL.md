@@ -28,6 +28,21 @@ python -m morning_video --only photo --only anim  # 단독 영상(실사풍, 캐
 - 날짜는 **한국시간(KST)** 기준이다. 사용자가 "오늘"이라고 하면 `TZ=Asia/Seoul date`로 확인한다.
 - 만든 뒤 `ffprobe`로 1080×1920 / 5.5초 / h264+aac를 확인한다. 각 영상의 마지막 프레임을 뽑아(`ffmpeg -ss 4.8 -frames:v 1`) 눈으로 본 다음에 전달한다.
 
+### 외부 무료 스킬로 만드는 영상
+
+이 저장소에는 무료로 공개된 인기 영상 스킬 3개가 같이 들어 있다(`.claude/skills/THIRD_PARTY.md`). 해당 작업을 할 때는 그 스킬을 먼저 불러온다.
+
+| 명령 | 스킬 | 결과 |
+|---|---|---|
+| `python -m morning_video --only motion` | `remotion-best-practices` (Remotion, React 코드로 만드는 모션그래픽) | `*_1_busan_m.mp4`, `*_2_anniversary_m.mp4`, `*_3_character_m.mp4` |
+| `python -m morning_video --only art` | `algorithmic-art` (p5.js 제너러티브 아트, 씨앗=날짜) | `*_art.mp4`, 대화형 뷰어 `generative/viewer.html` |
+| `python -m morning_video --only gif` | `slack-gif-creator` (GIF 스티커) | `*_hello.gif`(480×480), `*_hello_emoji.gif`(128×128) |
+
+- Remotion: `remotion/`가 프로젝트다. `python -m morning_video.export_remotion`이 `public/today.json`(날짜·메시지·기념일), 갈매기 스프라이트, 폰트, 배경음을 만든다. 장면은 `remotion/src/Motion*.tsx`. 미리보기는 `cd remotion && npx remotion studio`. 애니메이션은 `interpolate`/`Easing.spring`으로만 만들고 CSS 애니메이션은 쓰지 않는다. 회사 규모에 따라 Remotion 라이선스가 필요할 수 있다.
+- 제너러티브: 알고리즘 원본은 `generative/tidal_light.js` 하나다. 영상(`render.html` + `capture.js`)과 뷰어(`python3 generative/build_viewer.py`)가 이 파일을 함께 쓴다. 미학 설명은 `generative/philosophy.md`.
+- GIF: `morning_video/scene_gif.py`가 스킬의 `GIFBuilder`, 이징, `validate_gif`를 사용한다. 글자는 나눔 폰트로 그리고 이모지 글꼴은 쓰지 않는다.
+- node 패키지 설치: `cd remotion && npm install`, `cd generative && npm install`. 헤드리스 Chromium이 필요하다(Playwright).
+
 ## 2. 특별한 날 맞춤 (수능, 명절 등)
 
 - 기념일 추가·수정: `calendar_kr.py`의 `FIXED`(매년 같은 날), `NTH_WEEKDAY`(N번째 요일), `LUNAR`(음력), `SPECIAL`(연도별 날짜)

@@ -18,6 +18,20 @@ from .render_common import REPO
 from .styles import EXTRAS, STYLES, auto_style, module
 
 JOBS = ["busan", "anniversary", "character"]
+
+
+def render_motion(d, out_dir: Path) -> dict:
+    """Remotion 모션그래픽 3종: 데이터 내보내기 → node render.mjs."""
+    import subprocess
+    from .export_remotion import export
+    rdir = REPO / "remotion"
+    if not (rdir / "node_modules").exists():
+        subprocess.run(["npm", "install", "--no-audit", "--no-fund"], cwd=rdir, check=True)
+    data = export(d)
+    subprocess.run(["node", "render.mjs", str(out_dir)], cwd=rdir, check=True)
+    return {"anniversary": data["anniversary"]["name"], "message": data["message"]}
+
+
 NUM = {"busan": 1, "anniversary": 2, "character": 3}
 
 
@@ -57,8 +71,11 @@ def main(argv=None):
     print(f"▶ {cal.korean_date(d)} 영상 생성 시작 (스타일 {style_key.upper()} · {style.name}) → {out_dir}")
     for job in jobs:
         t0 = time.time()
-        if job in EXTRAS:
-            path = out_dir / f"{stamp}_{job}.mp4"
+        if job == "motion":
+            path = out_dir / f"{stamp}_*_m.mp4"
+            meta = render_motion(d, out_dir)
+        elif job in EXTRAS:
+            path = out_dir / (f"{stamp}_hello.gif" if job == "gif" else f"{stamp}_{job}.mp4")
             meta = module(EXTRAS[job][0]).build(d, path, brand=args.brand, audio=audio)
         else:
             path = out_dir / f"{stamp}_{NUM[job]}_{job}{suffix}.mp4"

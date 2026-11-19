@@ -1,0 +1,6 @@
+{
+  "name": "tidal-light",
+  "private": true,
+  "description": "윤슬(Tidal Light) 제너러티브 아트 영상 렌더러",
+  "dependencies": { "p5": "1.7.0" }
+}

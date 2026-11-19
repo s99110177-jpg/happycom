@@ -74,6 +74,16 @@ python -m morning_video --no-audio             # 무음
 python -m morning_video --style b              # 스타일 B (해운대·일력·페이퍼컷)
 ```
 
+## 무료 인기 영상 스킬로 만드는 영상
+
+| 명령 | 사용 스킬 | 결과 |
+|---|---|---|
+| `python -m morning_video --only motion` | Remotion 공식 스킬 (React 코드 모션그래픽) | 모션그래픽 3종 `*_m.mp4` |
+| `python -m morning_video --only art` | Anthropic `algorithmic-art` (p5.js) | 제너러티브 아트 '윤슬' `*_art.mp4` + 대화형 뷰어 `generative/viewer.html` |
+| `python -m morning_video --only gif` | Anthropic `slack-gif-creator` | 인사 GIF `*_hello.gif` + 이모지 `*_hello_emoji.gif` |
+
+node가 필요합니다: `cd remotion && npm install`, `cd generative && npm install`. 출처와 라이선스는 `.claude/skills/THIRD_PARTY.md`에 있습니다.
+
 ## Claude Code 스킬: 새 스타일 늘리기
 
 `.claude/skills/morning-video/`에 영상 제작 스킬이 들어 있습니다. Claude Code에서 이 저장소를 열고

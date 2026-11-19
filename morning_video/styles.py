@@ -36,6 +36,9 @@ STYLES: dict[str, Style] = {s.key: s for s in [
 EXTRAS = {
     "photo": ("scene_photo", "실사풍 새벽 광안대교"),
     "anim": ("scene_character3", "캐릭터 애니메이션 (착지 → 화이팅 → 인사)"),
+    "gif": ("scene_gif", "움직이는 인사 GIF 480x480 + 이모지 128x128 (slack-gif-creator 스킬)"),
+    "motion": ("remotion", "Remotion 모션그래픽 3종 (remotion-best-practices 스킬, node 필요)"),
+    "art": ("scene_generative", "제너러티브 아트 '윤슬' (algorithmic-art 스킬, p5.js, 날짜가 씨앗)"),
 }
 
 
