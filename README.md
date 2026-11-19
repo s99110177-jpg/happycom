@@ -29,8 +29,18 @@
 | 2 | `YYYYMMDD_2_anniversary_c.mp4` | 네온사인: 벽돌 벽에 날짜와 기념일 이름이 '지직' 하며 켜짐 |
 | 3 | `YYYYMMDD_3_character_c.mp4` | 8비트 픽셀 게임: 해피 갈매기가 걸어와 점프 → 보물상자 → RPG 대화창 인사, 칩튠 사운드 |
 
-`--style auto`로 실행하면 날마다 A → B → C 스타일이 돌아가며 나옵니다. 매일 자동 생성은 기본으로 `auto`를 씁니다.
-고정하려면 Settings → Secrets and variables → Actions → **Variables**에 `STYLE`을 `a`, `b`, `c` 중 하나로 추가하세요.
+### 스타일 D (`--style d`)
+
+| # | 영상 | 내용 |
+|---|------|------|
+| 1 | `YYYYMMDD_1_busan_d.mp4` | 수채화: 태종대 절벽과 하얀 등대, 물감이 번지며 그림이 완성되고 손글씨 날짜·메시지 |
+| 2 | `YYYYMMDD_2_anniversary_d.mp4` | 칠판: 날짜와 오늘의 기념일이 분필로 써지고 동그라미·별 낙서, 분필 소리 |
+| 3 | `YYYYMMDD_3_character_d.mp4` | 다이어리 스크랩북: 모눈 노트에 폴라로이드 속 해피 갈매기, 마스킹테이프·스티커, 손글씨 한마디 |
+
+`python -m morning_video --list-styles`로 전체 목록을 볼 수 있습니다.
+
+`--style auto`로 실행하면 날마다 등록된 스타일(A → B → C → D …)이 돌아가며 나옵니다. 매일 자동 생성은 기본으로 `auto`를 씁니다.
+고정하려면 Settings → Secrets and variables → Actions → **Variables**에 `STYLE`을 `a`, `b`, `c`, `d` 중 하나로 추가하세요.
 
 ### 추가 영상
 
@@ -63,6 +73,16 @@ python -m morning_video --only busan --scene gamcheon
 python -m morning_video --no-audio             # 무음
 python -m morning_video --style b              # 스타일 B (해운대·일력·페이퍼컷)
 ```
+
+## Claude Code 스킬: 새 스타일 늘리기
+
+`.claude/skills/morning-video/`에 영상 제작 스킬이 들어 있습니다. Claude Code에서 이 저장소를 열고
+"오늘 영상 만들어줘", "새로운 스타일로 만들어줘"처럼 요청하면 스킬이 절차를 안내합니다.
+
+- 스타일 등록부: `morning_video/styles.py` (장면 모듈 3개 + 한 줄 등록 = 새 스타일)
+- 빠른 미리보기: `python -m morning_video.preview scene_busan4 --times 0.5,2,4.8 --out preview.png`
+- 손그림 질감 도구: `morning_video/handmade.py` (수채화, 분필, 스티커, 손글씨 써지는 효과)
+- 다음 스타일 후보: `.claude/skills/morning-video/references/style-ideas.md`
 
 ## 내용 바꾸기
 

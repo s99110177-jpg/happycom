@@ -15,11 +15,11 @@ on:
         required: false
         default: ""
       style:
-        description: "스타일 (auto=날마다 A→B→C 순환, a, b, c)"
+        description: "스타일 (auto=날마다 순환, a, b, c, d)"
         required: false
         default: "auto"
         type: choice
-        options: [auto, a, b, c]
+        options: [auto, a, b, c, d]
 
 permissions:
   contents: write
