@@ -21,8 +21,16 @@
 | 2 | `YYYYMMDD_2_anniversary_b.mp4` | 일력: 어제 장이 뜯겨 나가고 오늘 날짜·음력·기념일이 나타남 |
 | 3 | `YYYYMMDD_3_character_b.mp4` | 종이 공예(페이퍼컷) 부산 풍경 위로 해피 갈매기가 인사 현수막을 끌고 비행 |
 
-`--style auto`로 실행하면 날마다 A/B 스타일이 번갈아 나옵니다. 매일 자동 생성은 기본으로 `auto`를 씁니다.
-고정하려면 Settings → Secrets and variables → Actions → **Variables**에 `STYLE`을 `a` 또는 `b`로 추가하세요.
+### 스타일 C (`--style c`)
+
+| # | 영상 | 내용 |
+|---|------|------|
+| 1 | `YYYYMMDD_1_busan_c.mp4` | 레트로 여행 포스터: 용두산 부산타워·부산항 크레인·배, 리소그래프 질감, 날짜 우표 도장 |
+| 2 | `YYYYMMDD_2_anniversary_c.mp4` | 네온사인: 벽돌 벽에 날짜와 기념일 이름이 '지직' 하며 켜짐 |
+| 3 | `YYYYMMDD_3_character_c.mp4` | 8비트 픽셀 게임: 해피 갈매기가 걸어와 점프 → 보물상자 → RPG 대화창 인사, 칩튠 사운드 |
+
+`--style auto`로 실행하면 날마다 A → B → C 스타일이 돌아가며 나옵니다. 매일 자동 생성은 기본으로 `auto`를 씁니다.
+고정하려면 Settings → Secrets and variables → Actions → **Variables**에 `STYLE`을 `a`, `b`, `c` 중 하나로 추가하세요.
 
 ### 추가 영상
 
